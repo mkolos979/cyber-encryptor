@@ -19,22 +19,22 @@ class EncryptorApp(ctk.CTk):
 
         self.selected_file = ""
 
-        self.title_label = ctk.CTkLabel(self, text="🔐 CyberEncryptor", font=ctk.CTkFont(size=24, weight="bold"))
+        self.title_label = ctk.CTkLabel(self, text="CyberEncryptor", font=ctk.CTkFont(size=24, weight="bold"))
         self.title_label.pack(pady=20)
 
-        self.file_entry = ctk.CTkEntry(self, width=400, placeholder_text="Файл не вибрано")
+        self.file_entry = ctk.CTkEntry(self, width=400, placeholder_text="Nie wybrano pliku")
         self.file_entry.pack(pady=10)
 
-        self.browse_button = ctk.CTkButton(self, text="🔍 Вибрати файл", command=self.browse_file)
+        self.browse_button = ctk.CTkButton(self, text="Wybierz plik", command=self.browse_file)
         self.browse_button.pack(pady=5)
 
-        self.encrypt_button = ctk.CTkButton(self, text="🔒 Зашифрувати", command=self.encrypt)
+        self.encrypt_button = ctk.CTkButton(self, text="Szyfruj", command=self.encrypt)
         self.encrypt_button.pack(pady=10)
 
-        self.upload_button = ctk.CTkButton(self, text="завантажити в google drive", command=self.upload)
+        self.upload_button = ctk.CTkButton(self, text="Prześlij na Google Drive", command=self.upload)
         self.upload_button.pack(pady=5)
 
-        self.decrypt_button = ctk.CTkButton(self, text="🔓 Розшифрувати", command=self.decrypt)
+        self.decrypt_button = ctk.CTkButton(self, text="Odszyfruj", command=self.decrypt)
         self.decrypt_button.pack(pady=5)
 
     def browse_file(self):
@@ -46,36 +46,36 @@ class EncryptorApp(ctk.CTk):
 
     def encrypt(self):
         if not self.selected_file:
-            messagebox.showwarning("Увага", "Будь ласка, виберіть файл для шифрування.")
+            messagebox.showwarning("Uwaga", "Proszę wybrać plik do zaszyfrowania.")
             return
         try:
             encrypted_path = encrypt_file(self.selected_file)
-            messagebox.showinfo("Успіх", f"Файл зашифровано:\n{encrypted_path}")
+            messagebox.showinfo("Sukces", f"Plik zaszyfrowany:\n{encrypted_path}")
         except Exception as e:
-            messagebox.showerror("Помилка", f"Не вдалося зашифрувати файл:\n{str(e)}")
+            messagebox.showerror("Błąd", f"Nie udało się zaszyfrować pliku:\n{str(e)}")
 
     def decrypt(self):
         if not self.selected_file:
-            messagebox.showwarning("Увага", "Будь ласка, виберіть файл для розшифрування.")
+            messagebox.showwarning("Uwaga", "Proszę wybrać plik do odszyfrowania.")
             return
         if not self.selected_file.endswith(".enc"):
-            messagebox.showwarning("Увага", "Це не зашифрований файл (.enc).")
+            messagebox.showwarning("Uwaga", "To nie jest zaszyfrowany plik (.enc).")
             return
         try:
             decrypted_path = decrypt_file(self.selected_file)
-            messagebox.showinfo("Успіх", f"Файл розшифровано:\n{decrypted_path}")
+            messagebox.showinfo("Sukces", f"Plik odszyfrowany:\n{decrypted_path}")
         except Exception as e:
-            messagebox.showerror("Помилка", f"Не вдалося розшифрувати файл:\n{str(e)}")
+            messagebox.showerror("Błąd", f"Nie udało się odszyfrować pliku:\n{str(e)}")
 
     def upload(self):
         if not self.selected_file:
-            messagebox.showwarning("Увага", "Будь ласка, виберіть файл для завантаження.")
+            messagebox.showwarning("Uwaga", "Proszę wybrać plik do przesłania.")
             return
         try:
             file_id = upload_to_drive(self.selected_file)
             if file_id:
-                messagebox.showinfo("Успіх", f"✅ Файл завантажено в Google Drive!\nID: {file_id}")
+                messagebox.showinfo("Sukces", f"Plik został przesłany na Google Drive.\nID: {file_id}")
             else:
-                messagebox.showwarning("Завантажено частково", "Файл завантажено, але ID не повернено.")
+                messagebox.showwarning("Uwaga", "Plik został przesłany, ale nie otrzymano identyfikatora.")
         except Exception as e:
-            messagebox.showerror("Помилка", f"❌ Не вдалося завантажити файл:\n{str(e)}")
+            messagebox.showerror("Błąd", f"Nie udało się przesłać pliku:\n{str(e)}")
